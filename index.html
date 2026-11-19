@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幻界 118 元素 × 16 型人格深度心理測驗平台</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #ec4899 100%);
+            --primary-color: #6366f1;
+            --accent-color: #ec4899;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
+            background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 50%, #fdf2f8 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            padding: 36px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px -5px rgba(79, 70, 229, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.05rem;
+            margin-top: 0;
+            text-align: center;
+            font-weight: 800;
+        }
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+        .btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+            margin: 4px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35); }
+        .btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-outline {
+            background: #ffffff;
+            color: #4f46e5;
+            border: 2px solid #c7d2fe;
+            box-shadow: none;
+        }
+        .btn-outline:hover { background: #eef2ff; }
+        .btn-save {
+            background: #fef3c7;
+            color: #92400e;
+            border: 2px solid #fcd34d;
+            box-shadow: none;
+        }
+        .btn-save:hover { background: #fde68a; }
+        .btn-danger {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            box-shadow: none;
+        }
+        .btn-danger:hover { background: #fecaca; }
+        .btn-restore {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+            box-shadow: none;
+        }
+        .btn-restore:hover { background: #bbf7d0; }
+        .btn-sm { padding: 6px 12px; font-size: 13px; }
+        .group-card {
+            border: 1px solid #e0e7ff;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 18px;
+            background: #fafaff;
+        }
+        .draft-banner {
+            border: 2px solid #fcd34d;
+            background: #fffbeb;
+            padding: 16px 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+        .history-card {
+            border: 1px solid #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            background: #ffffff;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        .history-card.deleted {
+            background: #f8fafc;
+            border-style: dashed;
+            opacity: 0.85;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 16px 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .option-label:hover { background: #fdf4ff; border-color: var(--accent-color); }
+        .option-label input { margin-right: 12px; transform: scale(1.2); accent-color: var(--accent-color); }
+        .badge-type {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #e0e7ff;
+            color: #4338ca;
+            margin-bottom: 8px;
+        }
+        .progress-bar-wrap {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 10px 0 18px 0;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+        .element-hero-card {
+            border-radius: 18px;
+            padding: 26px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 55%, #4c1d95 100%);
+            color: #ffffff;
+            margin-bottom: 22px;
+            box-shadow: 0 12px 28px rgba(49, 46, 129, 0.25);
+        }
+        .element-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.16);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .element-title-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 12px;
+            margin: 6px 0 12px 0;
+        }
+        .element-symbol {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: #fde047;
+        }
+        .element-name {
+            font-size: 1.65rem;
+            font-weight: 800;
+        }
+        .advice-banner {
+            margin-top: 16px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: rgba(253, 224, 71, 0.14);
+            border: 1px solid rgba(253, 224, 71, 0.45);
+            color: #fef08a;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+        .meta-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            color: #1e293b;
+        }
+        .meta-box.culinary {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef2f2 100%);
+            border-color: #fde68a;
+        }
+        .meta-box h4 {
+            margin: 0 0 8px 0;
+            font-size: 13.5px;
+            letter-spacing: 0.5px;
+            color: #6366f1;
+        }
+        .meta-box.culinary h4 { color: #b45309; }
+        .food-pill {
+            display: inline-block;
+            background: #ffffff;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #78350f;
+            margin: 2px 4px 6px 0;
+        }
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+        .dim-bar-row { margin-bottom: 14px; }
+        .dim-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #334155;
+        }
+        .dim-track {
+            display: flex;
+            height: 12px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #e2e8f0;
+        }
+        .dim-fill-a { background: #6366f1; transition: width 0.4s; }
+        .dim-fill-b { background: #ec4899; transition: width 0.4s; }
+        #chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 360px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        #chat-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 12px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #chat-body {
+            height: 310px;
+            overflow-y: auto;
+            padding: 12px;
+            background: #f8fafc;
+            font-size: 13.5px;
+        }
+        .chat-msg { margin-bottom: 10px; line-height: 1.55; word-break: break-word; }
+        .chat-msg.bot { color: #1e293b; background: #e2e8f0; padding: 10px 12px; border-radius: 12px; width: fit-content; max-width: 90%; }
+        .chat-msg.bot a {
+            color: #4338ca;
+            font-weight: 700;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+        .chat-msg.bot a:hover { color: #db2777; }
+        .chat-msg.user { color: white; background: #6366f1; padding: 8px 12px; border-radius: 12px; width: fit-content; max-width: 85%; margin-left: auto; }
+        .chat-action-btn {
+            display: block;
+            width: 100%;
+            margin-top: 8px;
+            padding: 9px 12px;
+            background: var(--primary-gradient);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.3);
+            transition: transform 0.2s;
+        }
+        .chat-action-btn:hover { transform: translateY(-1px); }
+        #chat-footer { display: flex; padding: 8px; border-top: 1px solid #cbd5e1; background: white; }
+        #chat-input { flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 首頁與歷史紀錄分頁 -->
+    <div id="home-screen">
+        <h1>✨ 幻界 118 元素 × 16 型人格測驗中心</h1>
+        <div class="nav-tabs">
+            <button type="button" class="btn btn-sm" id="tab-quiz-btn" onclick="switchHomeTab('quiz')">🧭 開始心理測驗</button>
+            <button type="button" class="btn btn-outline btn-sm" id="tab-history-btn" onclick="switchHomeTab('history')">📜 歷史紀錄與回收桶</button>
+        </div>
+
+        <div id="quiz-select-view">
+            <!-- 暫存進度提示區 -->
+            <div id="drafts-container"></div>
+
+            <p style="text-align: center; color: #64748b; font-size: 1.02rem; margin-bottom: 22px;">
+                每一大類包含 3 項子測驗。完成後系統將統整呈現專屬的 <b>幻界元素本命報告（含本命建議字、菜餚／蔬果滋味解析）</b>！
+            </p>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button type="button" class="btn" onclick="startCategoryGroup(1, 50)">⚡ 精簡練習版（約 50 題）</button>
+                <button type="button" class="btn" style="background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%);" onclick="startCategoryGroup(1, 200)">🔮 完整測驗版（全領域深度題庫）</button>
+            </div>
+            <div id="group-list-container">載入中...</div>
+        </div>
+
+        <div id="history-view" class="hidden">
+            <h3 style="color: #4f46e5; margin-top: 0;">📁 已完成的本命元素報告</h3>
+            <div id="active-history-container">載入中...</div>
+
+            <h3 style="color: #64748b; margin-top: 28px;">🗑️ 已刪除紀錄（可隨時一鍵復原）</h3>
+            <div id="deleted-history-container">載入中...</div>
+        </div>
+    </div>
+
+    <!-- 測驗作答畫面 -->
+    <div id="quiz-screen" class="hidden">
+        <div id="sub-quiz-indicator" style="font-size: 1.1rem; color: #ec4899; font-weight: 700; margin-bottom: 4px;"></div>
+        <div id="progress-indicator" style="font-size: 14px; color: #475569; font-weight: 600;">題目載入中...</div>
+        <div class="progress-bar-wrap"><div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div></div>
+        <span id="question-type-badge" class="badge-type">題型</span>
+        <h2 id="question-title" style="margin-top: 4px; font-size: 1.35rem; line-height: 1.5;"></h2>
+        <div id="options-container"></div>
+        <div style="margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;">
+            <div>
+                <button type="button" class="btn btn-outline" onclick="backToHome()">放棄並返回首頁</button>
+                <button type="button" class="btn btn-save" onclick="saveAndLeaveQuiz()">💾 暫時離開並儲存紀錄</button>
+            </div>
+            <button type="button" class="btn" id="next-btn" onclick="handleNextQuestion()" disabled>下一題 ➔</button>
+        </div>
+    </div>
+
+    <!-- 測驗結果報告畫面 -->
+    <div id="result-screen" class="hidden">
+        <h1>🔮 幻界元素人格深度解析報告</h1>
+        <div id="results-container"></div>
+        <div style="text-align: center; margin-top: 30px;">
+            <button type="button" class="btn btn-outline" onclick="backToHome(); switchHomeTab('history');">📜 查看歷史紀錄</button>
+            <button type="button" class="btn" onclick="backToHome()">返回首頁</button>
+        </div>
+    </div>
+</div>
+
+<!-- 聊天機器人引導懸浮視窗 -->
+<div id="chat-widget">
+    <div id="chat-header" onclick="toggleChat()">
+        <span>🤖 幻界元素諮詢小幫手</span>
+        <span id="chat-toggle-icon">▲</span>
+    </div>
+    <div id="chat-body">
+        <div class="chat-msg bot">你好！我是你的專屬測驗引導精靈 🌟。<br>除了自由聊天外，試著輸入「<b>我稍微查找我的人格特質</b>」（送 50 題精簡版）或「<b>我要做完整版測驗</b>」（送 200 題完整版），我會直接為你開啟按鈕與外部參考網站連結！</div>
+    </div>
+    <div id="chat-footer">
+        <input type="text" id="chat-input" placeholder="輸入你想問的問題..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+        <button type="button" class="btn btn-sm" style="margin:0 0 0 4px;" onclick="sendChatMessage()">發送</button>
+    </div>
+</div>
+
+<script>
+    let activeGroupQuizzes = [];
+    let allFlattenedQuestions = [];
+    let currentGlobalQIndex = 0;
+    let userAnswersGlobal = {};
+    let currentGroupId = 1;
+    let currentTargetCount = 50;
+    let currentDraftId = null;
+    let cachedDrafts = {};
+    let chatHistory = [];
+
+    function switchHomeTab(tab) {
+        const quizView = document.getElementById('quiz-select-view');
+        const historyView = document.getElementById('history-view');
+        const quizBtn = document.getElementById('tab-quiz-btn');
+        const historyBtn = document.getElementById('tab-history-btn');
+
+        if (tab === 'history') {
+            quizView.classList.add('hidden');
+            historyView.classList.remove('hidden');
+            quizBtn.classList.add('btn-outline');
+            historyBtn.classList.remove('btn-outline');
+            loadHistory();
+        } else {
+            historyView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            historyBtn.classList.add('btn-outline');
+            quizBtn.classList.remove('btn-outline');
+            loadDrafts();
+        }
+    }
+
+    async function loadDrafts() {
+        try {
+            const res = await fetch('/api/drafts');
+            const data = await res.json();
+            const container = document.getElementById('drafts-container');
+            cachedDrafts = {};
+
+            if (!data.ok || !data.drafts || data.drafts.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const groupNames = {
+                1: "第一大類：核心人格與行為風格",
+                2: "第二大類：職涯發展與學習思維",
+                3: "第三大類：情感與人際互動",
+                4: "第四大類：壓力管理與決策領導"
+            };
+
+            let html = '<div class="draft-banner"><h3 style="margin:0 0 10px 0; color:#92400e;">⏳ 尚未完成的暫存測驗紀錄</h3>';
+            data.drafts.forEach(d => {
+                cachedDrafts[d.draft_id] = d;
+                const answeredNum = Object.keys((d.state && d.state.userAnswersGlobal) || {}).length;
+                html += '<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; background:#ffffff; border:1px solid #fde68a; border-radius:10px; padding:10px 14px; margin-bottom:8px;">' +
+                    '<div>' +
+                        '<b>' + (groupNames[d.group_id] || '綜合測驗') + '</b>（已作答 ' + answeredNum + ' / ' + d.total_questions + ' 題）' +
+                        '<div style="font-size:12px; color:#78350f;">儲存時間：' + d.updated_at + '</div>' +
+                    '</div>' +
+                    '<div>' +
+                        '<button type="button" class="btn btn-sm" onclick="resumeDraft(' + d.draft_id + ')">▶️ 繼續作答</button>' +
+                        '<button type="button" class="btn btn-danger btn-sm" onclick="deleteDraft(' + d.draft_id + ')">捨棄</button>' +
+                    '</div>' +
+                '</div>';
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function resumeDraft(draftId) {
+        const d = cachedDrafts[draftId];
+        if (!d || !d.state) return;
+
+        currentDraftId = d.draft_id;
+        currentGroupId = d.state.currentGroupId || d.group_id || 1;
+        currentTargetCount = d.state.currentTargetCount || d.target_count || 50;
+        activeGroupQuizzes = d.state.activeGroupQuizzes || [];
+        allFlattenedQuestions = d.state.allFlattenedQuestions || [];
+        userAnswersGlobal = d.state.userAnswersGlobal || {};
+        currentGlobalQIndex = d.state.currentGlobalQIndex || 0;
+
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        renderGlobalQuestion();
+    }
+
+    async function deleteDraft(draftId) {
+        await fetch('/api/drafts/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ draft_id: draftId })
+        });
+        loadDrafts();
+    }
+
+    async function loadGroups() {
+        try {
+            const res = await fetch('/api/quizzes');
+            const data = await res.json();
+            if (data.ok) {
+                const groups = { 1: [], 2: [], 3: [], 4: [] };
+                data.quizzes.forEach(q => { if (groups[q.group_id]) groups[q.group_id].push(q); });
+
+                const groupNames = {
+                    1: "🔥 第一大類：個人核心性格與行為風格 (MBTI / DISC / 大五)",
+                    2: "🚀 第二大類：職涯發展與學習思維 (荷蘭碼 / 學習風格 / 創意思維)",
+                    3: "💖 第三大類：情感與人際互動 (EQ / 愛之語 / 溝通風格)",
+                    4: "⚡ 第四大類：壓力管理與決策領導 (抗壓性 / 領導力 / 理性決策)"
+                };
+
+                const container = document.getElementById('group-list-container');
+                let htmlStr = "";
+                Object.keys(groups).forEach(gId => {
+                    let listItems = groups[gId].map(q => "<li><b>" + q.quiz_title + "</b>：" + q.description + "</li>").join('');
+                    htmlStr += '<div class="group-card">' +
+                        '<h3 style="color: #4f46e5; margin-top: 0;">' + groupNames[gId] + '</h3>' +
+                        '<ul>' + listItems + '</ul>' +
+                        '<button type="button" class="btn" onclick="startCategoryGroup(' + gId + ', 50)">✨ 開始進行此大類測驗 (共 3 項子測驗)</button>' +
+                        '</div>';
+                });
+                container.innerHTML = htmlStr;
+            }
+        } catch (e) {
+            document.getElementById('group-list-container').innerText = '無法載入測驗列表，請確認後端伺服器已啟動。';
+        }
+    }
+
+    async function startCategoryGroup(groupId, count = 50) {
+        currentDraftId = null;
+        currentGroupId = groupId || 1;
+        currentTargetCount = count || 50;
+
+        const res = await fetch('/api/group-start?group_id=' + currentGroupId + '&count=' + currentTargetCount);
+        const data = await res.json();
+        if (data.ok) {
+            activeGroupQuizzes = data.quizzes;
+            allFlattenedQuestions = [];
+            userAnswersGlobal = {};
+
+            activeGroupQuizzes.forEach(quiz => {
+                quiz.questions.forEach(q => {
+                    allFlattenedQuestions.push({
+                        quiz_id: quiz.quiz_id,
+                        quiz_title: quiz.quiz_title,
+                        session_id: quiz.session_id,
+                        question_id: q.question_id,
+                        question_type: q.question_type,
+                        question_text: q.question_text,
+                        options: q.options
+                    });
+                });
+            });
+
+            if (currentTargetCount > 0 && allFlattenedQuestions.length > currentTargetCount) {
+                allFlattenedQuestions = allFlattenedQuestions.slice(0, currentTargetCount);
+            }
+
+            currentGlobalQIndex = 0;
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            renderGlobalQuestion();
+        }
+    }
+
+    function renderGlobalQuestion() {
+        if (currentGlobalQIndex >= allFlattenedQuestions.length) {
+            submitCompleteGroup();
+            return;
+        }
+
+        const qItem = allFlattenedQuestions[currentGlobalQIndex];
+        const pct = Math.round((currentGlobalQIndex / allFlattenedQuestions.length) * 100);
+
+        document.getElementById('sub-quiz-indicator').innerText = "📌 目前測驗單元：" + qItem.quiz_title;
+        document.getElementById('progress-indicator').innerText = "作答進度：第 " + (currentGlobalQIndex + 1) + " / " + allFlattenedQuestions.length + " 題 (" + pct + "%)";
+        document.getElementById('progress-bar-fill').style.width = pct + "%";
+        document.getElementById('question-type-badge').innerText = qItem.question_type;
+        document.getElementById('question-title').innerText = qItem.question_text;
+
+        const optContainer = document.getElementById('options-container');
+        optContainer.innerHTML = qItem.options.map(opt => {
+            const isChecked = userAnswersGlobal[qItem.question_id] === opt.key ? 'checked' : '';
+            return '<label class="option-label">' +
+                '<input type="radio" name="global-option" value="' + opt.key + '" ' + isChecked + ' onclick="selectCurrentOption(\'' + opt.key + '\')">' +
+                '<span><b>' + opt.key + '.</b> ' + opt.text + '</span>' +
+                '</label>';
+        }).join('');
+
+        document.getElementById('next-btn').disabled = !userAnswersGlobal[qItem.question_id];
+    }
+
+    function selectCurrentOption(optKey) {
+        const qItem = allFlattenedQuestions[currentGlobalQIndex];
+        if (qItem) {
+            userAnswersGlobal[qItem.question_id] = optKey;
+        }
+        document.getElementById('next-btn').disabled = false;
+    }
+
+    function handleNextQuestion() {
+        const selected = document.querySelector('input[name="global-option"]:checked');
+        if (!selected) return;
+        const qItem = allFlattenedQuestions[currentGlobalQIndex];
+        userAnswersGlobal[qItem.question_id] = selected.value;
+
+        currentGlobalQIndex++;
+        renderGlobalQuestion();
+    }
+
+    async function saveAndLeaveQuiz() {
+        // 若當下題目已有勾選但還沒按下一題，也一併記錄下來
+        const selected = document.querySelector('input[name="global-option"]:checked');
+        if (selected && allFlattenedQuestions[currentGlobalQIndex]) {
+            userAnswersGlobal[allFlattenedQuestions[currentGlobalQIndex].question_id] = selected.value;
+        }
+
+        try {
+            const res = await fetch('/api/save-progress', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    draft_id: currentDraftId,
+                    group_id: currentGroupId,
+                    target_count: currentTargetCount,
+                    current_index: currentGlobalQIndex,
+                    total_questions: allFlattenedQuestions.length,
+                    activeGroupQuizzes: activeGroupQuizzes,
+                    allFlattenedQuestions: allFlattenedQuestions,
+                    userAnswersGlobal: userAnswersGlobal
+                })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                const answeredCount = Object.keys(userAnswersGlobal).length;
+                alert('✅ 已為你暫存進度（目前已作答 ' + answeredCount + ' / ' + allFlattenedQuestions.length + ' 題），下次可從首頁點擊「繼續作答」！');
+                backToHome();
+            } else {
+                alert('儲存失敗：' + (data.message || '未知錯誤'));
+            }
+        } catch (e) {
+            alert('無法連線至後端伺服器，儲存失敗。');
+        }
+    }
+
+    async function submitCompleteGroup() {
+        const submissionMap = {};
+        activeGroupQuizzes.forEach(quiz => {
+            submissionMap[quiz.quiz_id] = { session_id: quiz.session_id, quiz_id: quiz.quiz_id, answers: {} };
+        });
+
+        allFlattenedQuestions.forEach(qItem => {
+            if (userAnswersGlobal[qItem.question_id]) {
+                submissionMap[qItem.quiz_id].answers[qItem.question_id] = userAnswersGlobal[qItem.question_id];
+            }
+        });
+
+        const submissions = Object.values(submissionMap);
+        const res = await fetch('/api/submit-unified-group', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                group_id: currentGroupId,
+                draft_id: currentDraftId,
+                submissions: submissions
+            })
+        });
+        const data = await res.json();
+        if (data.ok) {
+            currentDraftId = null;
+            showUnifiedFinalResult(data.unified_result);
+        }
+    }
+
+    function showUnifiedFinalResult(item) {
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.add('hidden');
+        const container = document.getElementById('results-container');
+        const el = item.assigned_element;
+        const food = el.culinary_taste || {
+            dish: "五彩時蔬野菇炊飯",
+            fruit: "綜合莓果",
+            vegetable: "清炒季節時蔬",
+            flavor_note: "酸甜鹹鮮平衡和諧，清香回甘。"
+        };
+        const adviceWord = el.advice_word || "【衡・進】—— 保持好奇與內在平衡，每一步都是獨特的風景。";
+
+        const peersHtml = (item.peer_elements || []).map(p =>
+            '<span style="display:inline-block; background:#f1f5f9; border:1px solid #cbd5e1; padding:4px 10px; border-radius:8px; margin:3px; font-size:13px;">' +
+            '<b>#' + p.num + ' ' + p.sym + '</b>【' + p.title + '】</span>'
+        ).join('');
+
+        const dimsHtml = item.dimensions.map(d =>
+            '<div class="dim-bar-row">' +
+                '<div class="dim-labels">' +
+                    '<span>' + d.code_a + ' (' + d.pct_a + '%)</span>' +
+                    '<span>' + d.name + ' ➔ <b>' + d.selected + '</b></span>' +
+                    '<span>(' + d.pct_b + '%) ' + d.code_b + '</span>' +
+                '</div>' +
+                '<div class="dim-track">' +
+                    '<div class="dim-fill-a" style="width:' + d.pct_a + '%"></div>' +
+                    '<div class="dim-fill-b" style="width:' + d.pct_b + '%"></div>' +
+                '</div>' +
+            '</div>'
+        ).join('');
+
+        container.innerHTML = '<div>' +
+            '<div class="element-hero-card">' +
+                '<div class="element-badge">' + el.period + ' ｜ ' + el.group + '</div>' +
+                '<div class="element-title-row">' +
+                    '<span class="element-symbol">#' + el.num + ' ' + el.sym + '</span>' +
+                    '<span class="element-name">' + el.eng + '【' + el.title + '】</span>' +
+                    '<span style="background:#ec4899; padding:4px 12px; border-radius:8px; font-weight:800; color:white;">MBTI：' + el.mbti + '（' + el.mbti_name + '）</span>' +
+                '</div>' +
+                '<p style="font-size: 1.05rem; line-height: 1.65; color: #e0e7ff; margin-bottom: 0;">' + el.desc + '</p>' +
+                '<div class="advice-banner">' +
+                    '<b>🧭 尋求建議的字（本命箴言）：</b>' + adviceWord +
+                '</div>' +
+            '</div>' +
+
+            '<div class="meta-grid">' +
+                '<div class="meta-box culinary" style="grid-column: 1 / -1;">' +
+                    '<h4>🍽️ 本命菜餚 × 水果 × 蔬菜與靈魂滋味</h4>' +
+                    '<div>' +
+                        '<span class="food-pill">🥘 代表菜餚：' + food.dish + '</span>' +
+                        '<span class="food-pill">🍎 代表水果：' + food.fruit + '</span>' +
+                        '<span class="food-pill">🥬 代表蔬菜：' + food.vegetable + '</span>' +
+                    '</div>' +
+                    '<div style="font-size:13.8px; color:#78350f; line-height:1.6; margin-top:4px;">' +
+                        '<b>滋味解析：</b>' + food.flavor_note +
+                    '</div>' +
+                '</div>' +
+                '<div class="meta-box">' +
+                    '<h4>🗓️ 農曆月令 × 代表花木</h4>' +
+                    '<div style="font-weight:700; font-size:15px; margin-bottom:4px;">' + el.month + ' ｜ ' + el.plant + '</div>' +
+                    '<div style="font-size:13px; color:#475569; line-height:1.5;">' + el.plant_desc + '</div>' +
+                '</div>' +
+                '<div class="meta-box">' +
+                    '<h4>🎭 榮格 12 人格原型</h4>' +
+                    '<div style="font-weight:700; font-size:15px; margin-bottom:4px;">' + el.archetype + '</div>' +
+                    '<div style="font-size:13px; color:#475569; line-height:1.5;">' + el.archetype_desc + '</div>' +
+                '</div>' +
+                '<div class="meta-box">' +
+                    '<h4>🎨 24 心理主色 × 副色</h4>' +
+                    '<div style="font-size:13.5px; margin-bottom:4px;">' +
+                        '<b>主色：</b><span class="color-swatch" style="background:' + el.primary_color.hex + '"></span>' + el.primary_color.name + '<br>' +
+                        '<b>副色：</b><span class="color-swatch" style="background:' + el.secondary_color.hex + '"></span>' + el.secondary_color.name +
+                    '</div>' +
+                    '<div style="font-size:12.5px; color:#475569; line-height:1.45;">' + el.color_reason + '</div>' +
+                '</div>' +
+                '<div class="meta-box">' +
+                    '<h4>💼 適合角色與職業方向</h4>' +
+                    '<div style="font-weight:700; font-size:14px; color:#0f172a; line-height:1.6;">' + el.careers + '</div>' +
+                '</div>' +
+            '</div>' +
+
+            '<div style="margin-top: 18px; background: #f8fafc; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0;">' +
+                '<h4 style="margin-top:0; color:#334155;">📊 16 型人格四維度光譜分析</h4>' +
+                dimsHtml +
+            '</div>' +
+
+            (peersHtml ? '<div style="margin-top: 14px;"><div style="font-size:13px; font-weight:700; color:#64748b; margin-bottom:6px;">🌟 同屬「' + el.mbti + '」陣營的其他幻界元素角色：</div>' + peersHtml + '</div>' : '') +
+        '</div>';
+
+        document.getElementById('result-screen').classList.remove('hidden');
+    }
+
+    let cachedHistoryReports = {};
+
+    async function loadHistory() {
+        try {
+            const res = await fetch('/api/history');
+            const data = await res.json();
+            if (!data.ok) return;
+
+            cachedHistoryReports = {};
+            const activeBox = document.getElementById('active-history-container');
+            const deletedBox = document.getElementById('deleted-history-container');
+
+            if (data.active_records.length === 0) {
+                activeBox.innerHTML = '<p style="color:#64748b; font-size:14px;">目前尚無完成的測驗紀錄，快去完成一次測驗吧！</p>';
+            } else {
+                activeBox.innerHTML = data.active_records.map(r => {
+                    cachedHistoryReports[r.report_id] = r.report;
+                    return '<div class="history-card">' +
+                        '<div>' +
+                            '<div style="font-weight:800; font-size:16px; color:#1e1b4b;">#' + r.element_num + ' ' + r.element_sym + '【' + r.element_title + '】 · <span style="color:#ec4899;">' + r.mbti_code + '</span></div>' +
+                            '<div style="font-size:12.5px; color:#64748b; margin-top:4px;">完成時間：' + r.created_at + ' ｜ 作答題數：' + r.question_count + ' 題</div>' +
+                        '</div>' +
+                        '<div>' +
+                            '<button type="button" class="btn btn-sm" onclick="viewHistoryReport(' + r.report_id + ')">👁️ 查看報告</button>' +
+                            '<button type="button" class="btn btn-danger btn-sm" onclick="toggleDeleteHistory(' + r.report_id + ', \'delete\')">🗑️ 刪除</button>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+            }
+
+            if (data.deleted_records.length === 0) {
+                deletedBox.innerHTML = '<p style="color:#94a3b8; font-size:13.5px;">回收桶目前是空的。</p>';
+            } else {
+                deletedBox.innerHTML = data.deleted_records.map(r => {
+                    return '<div class="history-card deleted">' +
+                        '<div>' +
+                            '<div style="font-weight:700; font-size:15px; color:#475569;">#' + r.element_num + ' ' + r.element_sym + '【' + r.element_title + '】 · ' + r.mbti_code + '</div>' +
+                            '<div style="font-size:12px; color:#94a3b8; margin-top:4px;">原完成時間：' + r.created_at + ' ｜ 作答題數：' + r.question_count + ' 題</div>' +
+                        '</div>' +
+                        '<div>' +
+                            '<button type="button" class="btn btn-restore btn-sm" onclick="toggleDeleteHistory(' + r.report_id + ', \'restore\')">♻️ 復原紀錄</button>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+            }
+        } catch (e) {
+            document.getElementById('active-history-container').innerText = '無法載入歷史紀錄。';
+        }
+    }
+
+    function viewHistoryReport(reportId) {
+        const rep = cachedHistoryReports[reportId];
+        if (rep) showUnifiedFinalResult(rep);
+    }
+
+    async function toggleDeleteHistory(reportId, action) {
+        const res = await fetch('/api/history/' + action, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ report_id: reportId })
+        });
+        const data = await res.json();
+        if (data.ok) loadHistory();
+    }
+
+    function backToHome() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
+        loadDrafts();
+        loadGroups();
+    }
+
+    function toggleChat() {
+        const body = document.getElementById('chat-body');
+        const icon = document.getElementById('chat-toggle-icon');
+        if (body.classList.contains('hidden')) {
+            body.classList.remove('hidden');
+            icon.innerText = "▲";
+        } else {
+            body.classList.add('hidden');
+            icon.innerText = "▼";
+        }
+    }
+
+    function formatBotReplyHtml(text) {
+        let html = text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1 ↗</a>');
+        html = html.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+        html = html.replace(/\n/g, '<br>');
+        return html;
+    }
+
+    async function sendChatMessage() {
+        const input = document.getElementById('chat-input');
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        const chatBody = document.getElementById('chat-body');
+        chatBody.innerHTML += '<div class="chat-msg user">' + msg + '</div>';
+        input.value = "";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        try {
+            const res = await fetch('http://127.0.0.1:8001/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: msg, history: chatHistory })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                chatHistory.push({ role: "user", content: msg });
+                chatHistory.push({ role: "assistant", content: data.reply });
+                if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
+
+                let formattedReply = formatBotReplyHtml(data.reply);
+                let buttonHtml = '';
+                if (data.recommended_group && data.button_text) {
+                    const qCount = data.question_count || 50;
+                    buttonHtml = '<button type="button" class="chat-action-btn" onclick="startCategoryGroup(' + data.recommended_group + ', ' + qCount + ')">' + data.button_text + '</button>';
+                }
+                chatBody.innerHTML += '<div class="chat-msg bot">' + formattedReply + buttonHtml + '</div>';
+            } else {
+                chatBody.innerHTML += '<div class="chat-msg bot">無法取得聊天回覆。</div>';
+            }
+        } catch (e) {
+            chatBody.innerHTML += '<div class="chat-msg bot">聊天後端伺服器未連線 (請確認 chatbot_agent.py 是否已執行)。</div>';
+        }
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    loadDrafts();
+    loadGroups();
+</script>
+</body>
+</html>
